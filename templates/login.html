@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1> <center> Login! </center> </h1>
+
+    <form id="blog" method="post">
+        <table cellspacing="5" cellpadding="5">
+            <tr>
+                <td><label for="username">Username</label></td>
+                <td>
+                    <input name="username" type="text" value="">
+                </td>
+            </tr>
+            <tr>
+                <td><label for="password">Password</label></td>
+                <td>
+                    <input name="password" type="password">
+                </td>
+            </tr>
+        </table>
+
+        <br>
+
+        <input type="submit" value="Submit">
+
+        <br>
+
+        <p>Don't have an account? <a href="/signup">Create one!</a></p>
+
+    </form>
+
+{% endblock %}
