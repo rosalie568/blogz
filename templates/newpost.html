@@ -2,19 +2,28 @@
 
 {% block content %}
 
-<h1>new post</h1>
+    <center><h1>new post</h1></center>
 
-<form method="post">
-    <label>
-        <div>title</div>
-        <input type="text" name="title" value="{{title}}">
-    </label>
-    <label>
-        <div>post</div>
-        <textarea name="body">{{body}}</textarea>
-    </label>
-    <div class="error">{{ error }}</div>
-    <input type="submit">
-</form>
+    <form method="post" id="blog">
+        <label>
+            <div>Title</div>
+            <input type="text" name="title" value="{{title}}">
+        </label>
+
+        <br>
+
+        <label>
+            <div>Post</div>
+            <textarea name="body">{{body}}</textarea>
+        </label>
+
+        <br>
+
+        <div class="error">{{ error }}</div>
+
+        <br>
+
+        <input type="submit" value="Submit">
+    </form>
 
 {% endblock %}
