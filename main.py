@@ -1,6 +1,7 @@
 import webapp2, jinja2, os, re
 from google.appengine.ext import db
 from models import Post, User
+from datetime import datetime
 import hashutils
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
@@ -22,9 +23,11 @@ class BlogHandler(webapp2.RequestHandler):
         """
 
         # TODO - filter the query so that only posts by the given user
-        user_post = db.GqlQuery("SELECT * From Post WHERE author = '%s' order by created DESC" % user )
+        #user_post = db.GqlQuery("SELECT * From Post WHERE author = '%s' order by created DESC" % user )
+        user_post = Post.all().filter("author", user).order('-created')
         if user_post:
-            return user_post.get()
+            return user_post.run()
+            #user_post.get()
 
     def get_user_by_name(self, username):
         """ Get a user object from the db, based on their username """
@@ -95,6 +98,7 @@ class BlogIndexHandler(BlogHandler):
             posts = self.get_posts_by_user(user, self.page_size, offset)
         else:
             posts = self.get_posts(self.page_size, offset)
+            user = User.all()
 
         # determine next/prev page numbers for navigation links
         if page > 1:
@@ -116,7 +120,8 @@ class BlogIndexHandler(BlogHandler):
                     page_size=self.page_size,
                     prev_page=prev_page,
                     next_page=next_page,
-                    username=username)
+                    username=username,
+                    user = user)
         self.response.out.write(response)
 
 #new post handler
