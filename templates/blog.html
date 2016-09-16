@@ -12,9 +12,9 @@
 
 {% endfor %}
 
-{% if post.author.username %}
+{% if username %}
     {% if prev_page %}
-    <a href="/blog/{{ post.author.username }}?page={{ prev_page }}">&lt; prev</a>
+    <a href="/blog/{{ username }}?page={{ prev_page }}">&lt; prev</a>
     {% endif %}
 
     {% if prev_page and next_page %}
@@ -22,7 +22,7 @@
     {% endif %}
 
     {% if next_page %}
-    <a href="/blog/{{ post.author.username }}?page={{ next_page }}">next &gt;</a>
+    <a href="/blog/{{ username }}?page={{ next_page }}">next &gt;</a>
     {% endif %}
 {% endif %}
 
