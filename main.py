@@ -6,6 +6,7 @@ import hashutils
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
 
+
 class BlogHandler(webapp2.RequestHandler):
     """ Utility class for gathering various useful methods that are used by most request handlers """
 
@@ -21,7 +22,9 @@ class BlogHandler(webapp2.RequestHandler):
         """
 
         # TODO - filter the query so that only posts by the given user
-        return None
+        user_post = db.GqlQuery("SELECT * From Post WHERE author = '%s' order by created DESC" % user )
+        if user_post:
+            return user_post.get()
 
     def get_user_by_name(self, username):
         """ Get a user object from the db, based on their username """
@@ -104,6 +107,7 @@ class BlogIndexHandler(BlogHandler):
         else:
             next_page = None
 
+        #user = self.user
         # render the page
         t = jinja_env.get_template("blog.html")
         response = t.render(
@@ -115,6 +119,7 @@ class BlogIndexHandler(BlogHandler):
                     username=username)
         self.response.out.write(response)
 
+#new post handler
 class NewPostHandler(BlogHandler):
 
     def render_form(self, title="", body="", error=""):
@@ -144,7 +149,7 @@ class NewPostHandler(BlogHandler):
             id = post.key().id()
             self.redirect("/blog/%s" % id)
         else:
-            error = "we need both a title and a body!"
+            error = "We need both a title and a body!"
             self.render_form(title, body, error)
 
 class ViewPostHandler(BlogHandler):
@@ -153,9 +158,12 @@ class ViewPostHandler(BlogHandler):
         """ Render a page with post determined by the id (via the URL/permalink) """
 
         post = Post.get_by_id(int(id))
+        query = Post.all().filter("author", self.user)
+        username = query.run()
+
         if post:
             t = jinja_env.get_template("post.html")
-            response = t.render(post=post)
+            response = t.render(post=post, username=username)
         else:
             error = "there is no post with id %s" % id
             t = jinja_env.get_template("404.html")
@@ -163,6 +171,7 @@ class ViewPostHandler(BlogHandler):
 
         self.response.out.write(response)
 
+#signup page handler
 class SignupHandler(BlogHandler):
 
     def validate_username(self, username):
@@ -256,9 +265,8 @@ class SignupHandler(BlogHandler):
         else:
             self.redirect('/blog/newpost')
 
+#login page setup
 class LoginHandler(BlogHandler):
-
-    # TODO - The login code here is mostly set up for you, but there isn't a template to log in
 
     def render_login_form(self, error=""):
         """ Render the login form with or without an error, based on parameters """
