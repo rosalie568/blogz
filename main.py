@@ -164,11 +164,11 @@ class ViewPostHandler(BlogHandler):
 
         post = Post.get_by_id(int(id))
         query = Post.all().filter("author", self.user)
-        username = query.run()
+        user = query.run()
 
         if post:
             t = jinja_env.get_template("post.html")
-            response = t.render(post=post, username=username)
+            response = t.render(post=post, user=user)
         else:
             error = "there is no post with id %s" % id
             t = jinja_env.get_template("404.html")
