@@ -2,10 +2,14 @@
 
 {% block content %}
 
-<h2 class="post-title">{{ post.title }}</h2>
-<p class="post-body">{{ post.body }}</p>
-<p class="post-author">
-    written by {{ post.author.username }} on {{ post.created.strftime('%Y-%m-%d') }}
-</p>
+<br><br>
+
+<div id="blogs">
+    <h2 class="post-title">{{ post.title }}</h2>
+    <p class="post-body">{{ post.body }}</p>
+    <p class="post-author">
+        written by {{ post.author.username }} on {{ post.created.strftime('%Y-%m-%d') }}
+    </p>
+</div>
 
 {% endblock %}

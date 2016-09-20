@@ -23,11 +23,9 @@ class BlogHandler(webapp2.RequestHandler):
         """
 
         # TODO - filter the query so that only posts by the given user
-        #user_post = db.GqlQuery("SELECT * From Post WHERE author = '%s' order by created DESC" % user )
-        user_post = Post.all().filter("author", user).order('-created')
+        user_post = Post.all().filter('author =', user).order('-created')
         if user_post:
-            return user_post.run()
-            #user_post.get()
+            return user_post.fetch(limit=limit, offset=offset)
 
     def get_user_by_name(self, username):
         """ Get a user object from the db, based on their username """
@@ -106,12 +104,11 @@ class BlogIndexHandler(BlogHandler):
         else:
             prev_page = None
 
-        if len(posts) == self.page_size and Post.all().count() > offset+self.page_size:
+        if len(list(posts)) == self.page_size and Post.all().count() > offset+self.page_size:
             next_page = page + 1
         else:
             next_page = None
 
-        #user = self.user
         # render the page
         t = jinja_env.get_template("blog.html")
         response = t.render(

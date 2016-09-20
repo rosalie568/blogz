@@ -79,3 +79,12 @@ nav #user-account {
     font: 16px sans-serif;
     border-radius: 10px;
 }
+
+#blogs {
+    background-color: #eee;
+    padding: 10px;
+    margin: 0 auto;
+    width: 700px;
+    font: 16px sans-serif;
+    border-radius: 10px;
+}
